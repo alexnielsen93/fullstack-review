@@ -41,7 +41,7 @@ module.exports ={
         if (authenticated){
           res.status(200).send({authenticated, user_id: user[0].login_id})
         }else{
-          throw new Error(401)
+          throw new Error(401, )
         }
 
       } catch(err){
@@ -49,6 +49,24 @@ module.exports ={
 
       }
 
+    },
+
+    getDetails: async(req,res)=>{
+      const db = req.app.get('db')
+      const { session } = req
+      try{
+        const {login_id : id} = session.user
+        const data = await db.getUserDetails({id})
+        res.status(200).send(data[0])
+
+      }catch(err){
+        res.sendStatus(500)
+      }
+
+    },
+    logout: (req,res)=>{
+      req.session.destroy()
+      res.sendStatus(200)
     }
 
 
