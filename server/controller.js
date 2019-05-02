@@ -33,7 +33,7 @@ module.exports ={
       console.log('login starting')
       const db = req.app.get('db')
       const { session } = req
-      const { loginUsername :username} = req.body   
+      const { loginUserName :username} = req.body   
       try{
         let user = await db.login({username})
         session.user = user[0]
@@ -41,6 +41,7 @@ module.exports ={
         if (authenticated){
           res.status(200).send({authenticated, user_id: user[0].login_id})
         }else{
+          console.log('something went wrong')
           throw new Error(401, )
         }
 
